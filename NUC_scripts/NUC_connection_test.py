@@ -1,5 +1,5 @@
 from dronekit import connect
-from pymavlink import mavutil, MAVLink_message
+from pymavlink import mavutil#, MAVLink_message
 
 ip = '/dev/ttyUSB0'
 
@@ -10,7 +10,7 @@ cube_orange = connect(ip=ip, baud=115200, use_native=True) # returns a Vehicle o
 print(cube_orange.gps_0)
 
 @cube_orange.on_message('HEARTBEAT')
-def message(name: str, msg: MAVLink_message):
+def message(name, msg):
     print(msg)
 
 
