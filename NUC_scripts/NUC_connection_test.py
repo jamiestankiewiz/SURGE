@@ -1,20 +1,11 @@
-from dronekit import connect
-from pymavlink import mavutil#, MAVLink_message
+from pymavlink import mavutil
 
-ip = '/dev/ttyUSB0'
+# Start a connection listening on a UDP port
+cube_orange_connection = mavutil.mavlink_connection('udpin:localhost:14540') # returns mavserial object
 
+# Wait for the first heartbeat 
+#   This sets the system and component ID of remote system for the link
+cube_orange_connection.wait_heartbeat()
+print("Heartbeat from system (system %u component %u)" % (cube_orange_connection.target_system, cube_orange_connection.target_component))
 
-# through dronekit.connect
-cube_orange = connect(ip=ip, baud=115200, use_native=True) # returns a Vehicle object
-# figure out where to put a message
-print(cube_orange.gps_0)
-
-@cube_orange.on_message('HEARTBEAT')
-def message(name, msg):
-    print(msg)
-
-
-
-# through mavutil
-cube_orange_connection = mavutil.mavlink_connection(ip)
-cube_orange_connection.mav.send('test') # something like that
+# Once connected, use 'the_connection' to get and send messages
