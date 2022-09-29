@@ -31,10 +31,27 @@ cube_orange_connection.mav.heartbeat_send(type=mavutil.mavlink.MAV_TYPE_GENERIC,
                                           system_status=0) # autopilot=1 is pixhawk, 
 # Once connected, use 'the_connection' to get and send messages
 # cube_orange_connection.mav.send('this is a test')
-if cube_orange_connection.mode_mapping():
-    print(cube_orange_connection.mode_mapping()['STABILIZE'])
-cube_orange_connection.mav.set_mode_send(
-    cube_orange_connection.target_system,
-    mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,
-    1)
+
+# if cube_orange_connection.mode_mapping():
+#     print(cube_orange_connection.mode_mapping()['STABILIZE'])
+# cube_orange_connection.mav.set_mode_send(
+#     cube_orange_connection.target_system,
+#     mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,
+#     1)
+
+
+cube_orange_connection.mav.param_request_list_send(
+    cube_orange_connection.target_system, cube_orange_connection.target_component
+)
+while True:
+    # time.sleep(0.01)
+    try:
+        message = cube_orange_connection.recv_match(type='PARAM_VALUE', blocking=True).to_dict()
+        print('name: %s\tvalue: %d' % (message['param_id'],
+                                       message['param_value']))
+    except Exception as error:
+        print(error)
+        # sys.exit(0)
+
+    
 cube_orange_connection.close()
