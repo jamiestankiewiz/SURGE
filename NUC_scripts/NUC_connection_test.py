@@ -32,8 +32,8 @@ cube_orange_connection.mav.heartbeat_send(type=mavutil.mavlink.MAV_TYPE_GENERIC,
 # Once connected, use 'the_connection' to get and send messages
 # cube_orange_connection.mav.send('this is a test')
 
-# if cube_orange_connection.mode_mapping():
-#     print(cube_orange_connection.mode_mapping()['STABILIZE'])
+if cube_orange_connection.mode_mapping():
+    print(cube_orange_connection.mode_mapping())
 # cube_orange_connection.mav.set_mode_send(
 #     cube_orange_connection.target_system,
 #     mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,
