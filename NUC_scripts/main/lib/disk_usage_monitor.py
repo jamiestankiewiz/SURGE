@@ -60,7 +60,7 @@ class DiskUsageMonitor:
             Output: None
             """
             # Pull disk information
-            diskInformation = psutil.psutil.disk_usage(self.pathToDisk)
+            diskInformation = psutil.disk_usage(self.pathToDisk)
 
             # Seperate variables
             spaceUsed = diskInformation[1]
