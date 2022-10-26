@@ -10,8 +10,6 @@ being written to the harddrive.
 import psutil
 import time
 
-from sympy import false, true
-
 class DiskUsageMonitor:
         def __init__(self, pathToDisk):
             """
