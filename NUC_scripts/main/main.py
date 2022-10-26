@@ -8,7 +8,7 @@ This script will run the main functionality of the NUC.
 """
 
 # Import libraries
-from nuc_scripts.main.lib.nuc_serial_comms import NUCSerialComms
+from NUC_scripts.main.lib.nuc_serial_comms import NUCSerialComms
 
 def executeFunctions():
     """
