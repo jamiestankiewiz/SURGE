@@ -47,7 +47,7 @@ class NUCSerialComms:
         Output: None
         """
         # See if disk is writting data
-        diskStatus = self.diskUsage.isDiskWriting(self.pathToDisk)
+        diskStatus = self.diskUsage.isDiskWriting()
 
         # Determine if payload is operating correctly NEEDS UPDATING
         if diskStatus == True:
