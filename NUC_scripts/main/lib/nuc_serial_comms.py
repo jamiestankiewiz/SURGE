@@ -78,4 +78,4 @@ class NUCSerialComms:
         """
         # Send serial communication to NUC
         # FIX self.cubeOrangeConnection.mav.statustext_send(mavutil.mavlink.eval(messageType), messageText)
-        self.cubeOrangeConnection.mav.statustext_send(messageType, messageText)
+        self.cubeOrangeConnection.mav.statustext_send(messageType, messageText.encode())
