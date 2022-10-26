@@ -34,7 +34,7 @@ class NUCSerialComms:
         self.cubeOrangeConnection.wait_heartbeat()
 
         # Create disk usagage object
-        self.diskUsage = DiskUsageMonitor()
+        self.diskUsage = DiskUsageMonitor(self.pathToDisk)
 
     def determineMessageForCube(self):
         """
