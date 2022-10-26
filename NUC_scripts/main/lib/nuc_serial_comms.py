@@ -53,7 +53,7 @@ class NUCSerialComms:
         if diskStatus == True:
 
             # Define messages
-            messageType = mavutil.mavlink.MAV_SEVERITY_ALERT
+            messageType = 'MAV_SEVERITY_ALERT'
             messageText = 'Disk Writing'
 
             # Send message to cube
@@ -61,7 +61,7 @@ class NUCSerialComms:
 
         else:
             # Define messages
-            messageType = mavutil.mavlink.MAV_SEVERITY_EMERGENCY
+            messageType = 'MAV_SEVERITY_EMERGENCY'
             messageText = 'Disk NOT Writing'
 
             # Send message to cube
@@ -77,4 +77,4 @@ class NUCSerialComms:
         Output: None
         """
         # Send serial communication to NUC
-        self.cubeOrangeConnection.mav.statustext_send(messageType, messageText)
+        self.cubeOrangeConnection.mav.statustext_send(mavutil.mavlink.messageType.encode(), messageText)
