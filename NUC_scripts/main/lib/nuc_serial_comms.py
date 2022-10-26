@@ -10,7 +10,7 @@ being collected.
 
 # Import mavutil
 from pymavlink import mavutil
-from disk_usage_monitor import DiskUsageMonitor
+from lib.disk_usage_monitor import DiskUsageMonitor
 
 class NUCSerialComms:
     def __init__(self, serialPort, serialSpeed, pathToDisk):
