@@ -39,7 +39,8 @@ def main():
 
     Output: None
     """
-    executeFunctions()
+    while True:
+        executeFunctions()
 
 if __name__ == "__main__":
     main()

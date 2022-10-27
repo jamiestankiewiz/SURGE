@@ -53,7 +53,7 @@ class NUCSerialComms:
         if diskStatus == True:
 
             # Define messages
-            messageType = mavutil.mavlink.MAV_SEVERITY_ALERT
+            messageType = mavutil.mavlink.MAV_SEVERITY_DEBUG
             messageText = 'Disk Writing'
 
             # Send message to cube
@@ -61,7 +61,7 @@ class NUCSerialComms:
 
         else:
             # Define messages
-            messageType = mavutil.mavlink.MAV_SEVERITY_EMERGENCY
+            messageType = mavutil.mavlink.MAV_SEVERITY_DEBUG
             messageText = 'Disk NOT Writing'
 
             # Send message to cube
