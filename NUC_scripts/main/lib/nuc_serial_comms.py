@@ -31,7 +31,7 @@ class NUCSerialComms:
         self.cubeOrangeConnection = mavutil.mavlink_connection(self.serialPort, baud=self.serialSpeed)
 
         # Establish that a connection has occured
-        self.cubeOrangeConnection.wait_heartbeat(timeout=1)
+        self.cubeOrangeConnection.wait_heartbeat()
 
         # Print the system has connected
         print("Connceted to Flight Controller!")
