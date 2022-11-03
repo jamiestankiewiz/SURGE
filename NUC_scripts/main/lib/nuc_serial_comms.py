@@ -28,7 +28,7 @@ class NUCSerialComms:
         self.pathToDisk = pathToDisk
 
         # Create cube orange connection object
-        self.cubeOrangeConnection = mavutil.mavlink_connection(self.serialPort, baud=self.serialSpeed, timeout=1)
+        self.cubeOrangeConnection = mavutil.mavlink_connection(self.serialPort, baud=self.serialSpeed)
 
         # Establish that a connection has occured
         self.cubeOrangeConnection.wait_heartbeat()
