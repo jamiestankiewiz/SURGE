@@ -33,6 +33,9 @@ class NUCSerialComms:
         # Establish that a connection has occured
         self.cubeOrangeConnection.wait_heartbeat()
 
+        # Print the system has connected
+        print("Connceted to Flight Controller")
+
         # Create disk usagage object
         self.diskUsage = DiskUsageMonitor(self.pathToDisk)
 
