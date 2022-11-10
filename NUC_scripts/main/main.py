@@ -30,6 +30,8 @@ def executeFunctions():
     # Start fuctions
     serialComms.determineMessageForCube()
 
+# Test commit asdfasdf
+
 def main():
     """
     This excutes the primarity defintions of the main 
