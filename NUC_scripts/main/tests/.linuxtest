@@ -1,0 +1,3 @@
+python test1.py &
+python test3.py
+wait
