@@ -1,7 +1,7 @@
 from multiprocessing import Process, cpu_count
 # from threading import Thread
-from test1 import count_up
-from test3 import count_down
+from count_up import count_up
+from count_down import count_down
 # import concurrent.futures
 
 if __name__ == '__main__':
