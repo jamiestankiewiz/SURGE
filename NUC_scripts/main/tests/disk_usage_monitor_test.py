@@ -3,7 +3,7 @@ Auhtor: Andreas Brecl
 Date: 01/23/2023
 
 This script will test the functionality of the disk monitoring script.
-This will use the pytest unit testing library to test the functionality
+This will use the unittest unit testing library to test the functionality
 of each definition.
 
 To Run tests navigate to the main folder in your terminal then type:
@@ -20,7 +20,7 @@ from lib.disk_usage_monitor import DiskUsageMonitor
 
 class TestStringMethods(unittest.TestCase):
 
-    def test_isDiskWriting(self):
+    def test_isDiskWriting_one(self):
         """
         This funciton will test if the disk writing function accurate checks
         if the data is being written to a harddrive.
