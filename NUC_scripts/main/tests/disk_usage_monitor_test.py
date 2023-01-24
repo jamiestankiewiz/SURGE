@@ -20,28 +20,21 @@ from lib.disk_usage_monitor import DiskUsageMonitor
 
 class TestStringMethods(unittest.TestCase):
 
-    def test_isDiskWriting_one(self):
+    def test_isDiskWriting(self):
         """
         This funciton will test if the disk writing function accurate checks
-        if the data is being written to a harddrive. This will verify writing has
-        occured.
+        if the data is being written to a harddrive.
 
         Input:  None
 
         Output: None
         """
-        
+        # Define path and create object
+        pathToDisk = "C:"
+        diskUsage = DiskUsageMonitor(pathToDisk)
 
-    def test_isDiskWriting_two(self):
-        """
-        This funciton will test if the disk writing function accurate checks
-        if the data is being written to a harddrive. This will verify no writing
-        has occured
-
-        Input:  None
-
-        Output: None
-        """
+        # Check if message output is recieved
+        self.assertIsInstance(diskUsage.isDiskWriting(), bool)
 
     def test_pullDiskData_one(self):
         """
