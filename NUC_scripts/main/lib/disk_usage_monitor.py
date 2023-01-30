@@ -7,7 +7,7 @@ the NUC. It can pull hard drive data then relay an output if data is
 being written to the harddrive.
 """
 
-import psutil
+import os.path
 import time
 
 class DiskUsageMonitor:
@@ -60,10 +60,10 @@ class DiskUsageMonitor:
         Output: None
         """
         # Pull disk information
-        diskInformation = psutil.disk_usage(self.pathToDisk)
+        diskInformation = os.path.getsize(self.pathToDisk)
 
         # Seperate variables
-        spaceUsed = diskInformation[1]
+        spaceUsed = diskInformation
 
         # Return space used
         return spaceUsed

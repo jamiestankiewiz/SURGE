@@ -25,7 +25,7 @@ def main():
     # Define initial variables
     serialSpeed = 921600
     serialPort = "/dev/ttyUSB0"
-    pathToDisk = "/media/DataStore/"
+    pathToDisk = "/media/DataStore/usrp3"
 
     # Create objects
     serialComms = NUCSerialComms(serialPort, serialSpeed, pathToDisk)
