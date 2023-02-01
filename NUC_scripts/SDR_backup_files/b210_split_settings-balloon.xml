@@ -1,0 +1,40 @@
+<uhd>
+  <usrp_multi>
+    <args>serial=31F4410,recv_buff_size=2e7,num_recv_frames=256</args>
+    <sample_rate>22e6</sample_rate>
+    <wirefmt>sc16</wirefmt>
+    <osc_source>internal</osc_source>
+    <time_source>none</time_source>
+    <buffer_time>5</buffer_time>
+    <min_free>1</min_free>
+    <peak>0.25</peak>
+    <type>sc8_0</type>
+
+    <write_meta>1</write_meta>
+
+    <extension>sc8</extension>
+    <channel_offset>0</channel_offset>
+
+    <stream>
+      <center_freq>1.17645e9</center_freq>
+      <subdev />
+      <int_n>1</int_n>
+      <lo />
+      <export />
+      <gain>45</gain>
+      <bandwidth>20.322e6</bandwidth>
+      <antenna>RX2</antenna>
+      <site_id>BALLOON_1575.42_16.0</site_id>
+      <ant_id>A3</ant_id>
+      <dev_name>USRP1</dev_name>
+      <path_name>/media/DataStore/usrp3</path_name>
+      <path_name2 />
+    </stream>
+    <record_paths>
+      <path>/media/DataStore/l1/</path>
+    </record_paths>
+    <file_interval>30</file_interval>
+    <folder_interval>1</folder_interval>
+    <lockfile>0</lockfile>
+ </usrp_multi>
+</uhd>
