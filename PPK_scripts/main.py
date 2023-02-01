@@ -44,6 +44,7 @@ def main():
 
         # Read in data
         data = str(ser.readline())
+        print(ser.readline())
 
         # Save data
         f.writelines(data)
