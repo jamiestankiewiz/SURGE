@@ -70,7 +70,7 @@ def checkForFileNumber(pathToDisk):
         for file in directoryList:
             splitFile = file.split("_")
             splitFileSecond = splitFile.split(".")
-            fileNumberCurrent = splitFileSecond[0]
+            fileNumberCurrent = int(splitFileSecond[0])
 
             # See if number is larger
             if fileNumberCurrent > fileNumber:
