@@ -7,10 +7,13 @@ Date: 10/25/2022
 This script will run the main functionality of the NUC.
 """
 
+# Import time
+from time import time
+
 # Import libraries
 from lib.nuc_serial_comms import NUCSerialComms
 
-def executeFunctions():
+def main():
     """
     This function will execute the functions for running
     the functionality of the NUC.
@@ -22,25 +25,16 @@ def executeFunctions():
     # Define initial variables
     serialSpeed = 921600
     serialPort = "/dev/ttyUSB0"
-    pathToDisk = "/media/DataStore/"
+    pathToDisk = "/media/DataStore/usrp3"
 
     # Create objects
     serialComms = NUCSerialComms(serialPort, serialSpeed, pathToDisk)
 
-    # Start fuctions
-    serialComms.determineMessageForCube()
-
-def main():
-    """
-    This excutes the primarity defintions of the main 
-    script.
-    
-    Input:  None
-
-    Output: None
-    """
+    # Run main loop
     while True:
-        executeFunctions()
+
+        # Start fuctions
+        serialComms.determineMessageForCube()
 
 if __name__ == "__main__":
     main()
