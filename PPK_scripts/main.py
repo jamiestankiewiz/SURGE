@@ -48,8 +48,9 @@ def main():
         # Save data
         f.writelines(data)
 
-    # Close the file
+    # Close the file and serial
     f.close()
+    ser.close()
 
 def checkForFileNumber(pathToDisk):
     """
