@@ -38,15 +38,17 @@ def main():
     )
 
     # Save information to file
+    f = open(newFileName, "a")
     while True:
 
         # Read in data
         data = str(ser.readline())
 
         # Save data
-        f = open(newFileName, "a")
         f.writelines(data)
-        f.close()
+    
+    # Close the file
+    f.close()
 
 
 def checkForFileNumber(pathToDisk):
