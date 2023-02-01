@@ -22,10 +22,11 @@ def main():
     Output: None
     """
     # Define base variables
-    pathToDisk = "/media/PPK_data"
+    pathToDisk = "/media/PPK_data/"
 
     # Get file name
     newFileName = checkForFileNumber(pathToDisk)
+    newFileNameAndPath = pathToDisk + newFileName
 
     # Create serial object
     ser = serial.Serial(
@@ -34,20 +35,22 @@ def main():
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
         bytesize=serial.EIGHTBITS,
-        timeout=1
+        timeout=10
     )
 
     # Save information to file
-    while True:
+    f = open(newFileNameAndPath, "a")
+    while ser.read():
 
         # Read in data
         data = str(ser.readline())
 
         # Save data
-        f = open(newFileName, "a")
         f.writelines(data)
-        f.close()
 
+    # Close the file and serial
+    f.close()
+    ser.close()
 
 def checkForFileNumber(pathToDisk):
     """
