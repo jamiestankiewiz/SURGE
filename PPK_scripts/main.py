@@ -39,13 +39,15 @@ def main():
     )
 
     # Save information to file
-    f = open(newFileNameAndPath, "ab")
-    while ser.read():
+    f = open(newFileNameAndPath, "wb")
+    while True:
 
         # Read in data
         data = ser.readline()
+    
+        # Test prints    
         print(data)
-        
+
         # Save data
         f.write(data)
 
