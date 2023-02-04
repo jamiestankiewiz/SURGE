@@ -44,10 +44,9 @@ def main():
 
         # Read in data
         data = str(ser.readline())
-        print(ser.readline())
 
         # Save data
-        f.writelines(data)
+        f.writelines(data + '\n')
 
     # Close the file and serial
     f.close()
