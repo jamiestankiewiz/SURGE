@@ -22,7 +22,7 @@ def main():
     Output: None
     """
     # Define base variables
-    pathToDisk = "/media/PPK_data/"
+    pathToDisk = "D:\Desktop\Past Semesters\Fall 2022\ASEN 5018\PPK_data\\"
 
     # Get file name
     newFileName = checkForFileNumber(pathToDisk)
@@ -30,7 +30,7 @@ def main():
 
     # Create serial object
     ser = serial.Serial(
-        port="/dev/ttyS0",
+        port="COM3",
         baudrate=38400,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
@@ -44,10 +44,12 @@ def main():
 
         # Read in data
         data = str(ser.readline())
+
+        # TEST LINE
         print(ser.readline())
 
         # Save data
-        f.writelines(data)
+        f.writelines(data + '\n')
 
     # Close the file and serial
     f.close()
