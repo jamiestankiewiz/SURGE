@@ -30,7 +30,7 @@ def main():
 
     # Create serial object
     ser = serial.Serial(
-        port="/dev/ttyS0",
+        port="/dev/ttyACM0",
         baudrate=38400,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
