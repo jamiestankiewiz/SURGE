@@ -39,14 +39,14 @@ def main():
     )
 
     # Save information to file
-    f = open(newFileNameAndPath, "a")
+    f = open(newFileNameAndPath, "wb")
     while ser.read():
 
         # Read in data
-        data = str(ser.readline())
+        data = ser.readline()
 
         # Save data
-        f.writelines(data + '\n')
+        f.write(data)
 
     # Close the file and serial
     f.close()
