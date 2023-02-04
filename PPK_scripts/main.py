@@ -40,17 +40,21 @@ def main():
 
     # Save information to file
     f = open(newFileNameAndPath, "wb")
-    while ser.read():
+    while True:
 
-        # Read in data
-        data = ser.readline()
+        try:
+            # Read in data
+            data = ser.readline()
 
-        # Save data
-        f.write(data)
+            # Save data
+            f.write(data)
 
-    # Close the file and serial
-    f.close()
-    ser.close()
+        except:
+            # Close the file and serial
+            f.close()
+            ser.close()
+
+
 
 def checkForFileNumber(pathToDisk):
     """
