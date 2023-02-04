@@ -30,7 +30,7 @@ def main():
 
     # Create serial object
     ser = serial.Serial(
-        port="COM3",
+        port="COM4",
         baudrate=38400,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
@@ -39,17 +39,15 @@ def main():
     )
 
     # Save information to file
-    f = open(newFileNameAndPath, "a")
+    f = open(newFileNameAndPath, "ab")
     while ser.read():
 
         # Read in data
-        data = str(ser.readline())
-
-        # TEST LINE
-        print(ser.readline())
-
+        data = ser.readline()
+        print(data)
+        
         # Save data
-        f.writelines(data + '\n')
+        f.write(data)
 
     # Close the file and serial
     f.close()
@@ -84,7 +82,7 @@ def checkForFileNumber(pathToDisk):
 
         # Create new file name
         newFileNumber = fileNumber + 1
-        newFileName = "PPKdata_" + str(newFileNumber) + ".txt"    
+        newFileName = "PPKdata_" + str(newFileNumber) + ".ubx"    
 
     else:
         newFileName = "PPKdata_1.txt"
