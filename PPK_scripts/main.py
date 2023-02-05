@@ -40,19 +40,20 @@ def main():
 
     # Save information to file
     f = open(newFileNameAndPath, "wb")
-    while True:
 
-        try:
+    try:
+        while True:
+
             # Read in data
             data = ser.readline()
 
             # Save data
             f.write(data)
 
-        except:
-            # Close the file and serial
-            f.close()
-            ser.close()
+    except:
+        # Close the file and serial
+        f.close()
+        ser.close()
 
 
 
