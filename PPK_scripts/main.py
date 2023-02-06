@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Author: Andreas Brecl
+Author: Andreas Brecl, Aaron Buller
 Date: 02/01/2023
 
 This script will run the PPK to save software to the NUC.
