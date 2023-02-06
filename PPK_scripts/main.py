@@ -11,6 +11,7 @@ This script will run the PPK to save software to the NUC.
 import time
 import os
 import serial
+import serial.tools.list_ports
 
 def main():
     """
@@ -28,9 +29,12 @@ def main():
     newFileName = checkForFileNumber(pathToDisk)
     newFileNameAndPath = pathToDisk + newFileName
 
+    # Get the path of the USB port
+    usb_path = getCommPort()
+
     # Create serial object
     ser = serial.Serial(
-        port="/dev/ttyACM0",
+        port=usb_path,
         baudrate=38400,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
@@ -40,17 +44,22 @@ def main():
 
     # Save information to file
     f = open(newFileNameAndPath, "wb")
-    while ser.read():
 
-        # Read in data
-        data = ser.readline()
+    try:
+        while True:
 
-        # Save data
-        f.write(data)
+            # Read in data
+            data = ser.readline()
 
-    # Close the file and serial
-    f.close()
-    ser.close()
+            # Save data
+            f.write(data)
+
+    except:
+        # Close the file and serial
+        f.close()
+        ser.close()
+
+
 
 def checkForFileNumber(pathToDisk):
     """
@@ -87,6 +96,20 @@ def checkForFileNumber(pathToDisk):
         newFileName = "PPKdata_1.txt"
 
     return newFileName
+
+def getCommPort():
+    """ Return the file path of the comm port that the """
+
+    # Get all the active com ports 
+    ports = serial.tools.list_ports.comports()
+
+    # Loop through all ports to find the gps reciever
+    for port in ports:
+        description = port.description
+        if description == "u-blox GNSS receiver":
+            usb_path = port.device
+            return usb_path
+    
 
 if __name__ == "__main__":
     main()
