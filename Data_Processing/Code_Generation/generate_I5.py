@@ -13,6 +13,8 @@ def main():
 
     code_dict = {}
 
+    SDR_SAMPLE = 22e6
+
     for sat in prn_dict:
         prn = int(sat)
         delay = prn_dict[sat]
@@ -45,7 +47,7 @@ def main():
     # Serialize the json object
     json_object = json.dumps(code_dict)
     
-    with open("I5_Codes.json",'w') as file:
+    with open("../Codes/I5_BaseCodes.json",'w') as file:
         file.write(json_object)
 
 
