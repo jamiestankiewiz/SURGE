@@ -34,6 +34,9 @@ def main():
             (bval,xb) = shift_XBQ(xb)
             (aval,xa) = shift_XA(xa)
 
+            if xa == [1,1,1,1,1,1,1,1,1,1,1,0,1]:
+                xa = [1,1,1,1,1,1,1,1,1,1,1,1,1]
+
             # Compute the new code value
             new_val = aval^bval
 
