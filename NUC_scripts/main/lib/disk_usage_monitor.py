@@ -71,10 +71,10 @@ class DiskUsageMonitor:
                 currentSize = os.path.getsize(file)
                 
                 # Add to total dir size
-                size = size + currentSize
+                fileSize = fileSize + currentSize
 
         # Seperate variables
-        spaceUsed = size
+        spaceUsed = fileSize
 
         # Return space used
         return spaceUsed
