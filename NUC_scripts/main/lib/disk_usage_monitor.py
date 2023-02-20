@@ -59,13 +59,22 @@ class DiskUsageMonitor:
 
         Output: None
         """
-        # Pull disk information
-        diskInformation = os.path.getsize(self.pathToDisk)
+        # Preallocate sizing
+        fileSize = 0
+
+        # Pull file path information
+        filesInPath = os.scandir(self.pathToDisk)
+
+        # Sort through all files
+        for file in filesInPath:
+            if file.is_file():
+                currentSize = os.path.getsize(file)
+                
+                # Add to total dir size
+                size = size + currentSize
 
         # Seperate variables
-        spaceUsed = diskInformation
+        spaceUsed = size
 
         # Return space used
         return spaceUsed
-
-
