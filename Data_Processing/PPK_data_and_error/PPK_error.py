@@ -9,7 +9,7 @@ This script will calculate the PPK error bounds.
 
 from lib.parse_pos_data import ParsePOSData
 from statistics import mean
-from geopy import distance
+from pymap3d import geodetic2enu
 from math import sqrt, pow
 import numpy as np
 import matplotlib.pyplot as plt
@@ -40,32 +40,30 @@ def main():
     _, latitude, longitude, height, Q, _ = errorFile.getPOSData()
 
     # Calculate STD sigma
-    meanDistance, sigma, distaneList = calculateSigmaAndMean(latitude, longitude, height, Q)
-    print(meanDistance)
-    print(sigma)
+    distaneListENU = calculateSigmaAndMean(latitude, longitude, height, Q)
 
     # Plot values
-    plotErrorValues(meanDistance, sigma, distaneList)
+    plotErrorValues(distaneListENU)
 
-def plotErrorValues(meanDistance, sigma, distaneList):
+def plotErrorValues(distaneListENU):
     """
     This function will plot the resulting values form the error calculations.
 
-    Inupt:  sigma <float> - Standard deviation of data
-            meanDistance <float> - Mean of dataset
-            distaneList <list><float> - list of distances
+    Inupt:  distaneListENU <list> - ENU Positions
 
     Output: None
     """
-    # Convert to numpy array
-    distaneListNp = np.array(distaneList)
+    # Convert ENU values to numpy array
+    distanceListENUEast = np.array([distanceENU[0] for distanceENU in distaneListENU])*100
+    distanceListENUNorth = np.array([distanceENU[1] for distanceENU in distaneListENU])*100
+    distanceListENUHei = np.array([distanceENU[2] for distanceENU in distaneListENU])*100
 
-    # Create histogram
-    plt.hist(distaneListNp, 200)
-    plt.xlabel("Distance [cm]")
-    plt.ylabel("Number of Occurances")
-    plt.title("Distance from Calculated Average Value")
-    plt.axvline(sigma, color='k', linestyle='dashed', linewidth=1)
+    # Create scatter plot
+    plt.figure()
+    plt.scatter(distanceListENUEast, distanceListENUNorth)
+    plt.xlabel('East Error [cm]')
+    plt.ylabel('North Error [cm]')
+    plt.title('ENU Error')
 
     # Show plot
     plt.show()
@@ -82,6 +80,7 @@ def calculateSigmaAndMean(latitude, longitude, height, Q):
     Output: sigma <float> - Standard deviation of data
             meanDistance <float> - Mean of dataset
             distaneList <list><float> - list of distances
+            distaneListENU <list> - ENU Positions
     """
     # Calculate average position per data
     latitudeQ1 = []
@@ -100,28 +99,18 @@ def calculateSigmaAndMean(latitude, longitude, height, Q):
     # Calculate average position
     averagePosition = [mean(latitudeQ1), mean(longitudeQ1), mean(heightQ1)]
 
-    # Calculate distance between points
-    distaneList = []
+    # Calculate ENU coordinates for error
+    distaneListENU = []
     for index in range(len(latitude)):
 
         # Check if Q is 1
         if Q[index] == 1:
 
-            # Calculate GNSS distance difference to meters
-            averageGpsPosition = (averagePosition[0], averagePosition[1])
-            gpsPosition = (latitude[index], longitude[index])
-            gpsDistance = distance.distance(averageGpsPosition, gpsPosition).km*1000
-            heightPosition = abs(averagePosition[2] - height[index])
+            # Calculate ENU data
+            ENUCoord = geodetic2enu(latitude[index],longitude[index],height[index],averagePosition[0],averagePosition[1],averagePosition[2])
+            distaneListENU.append(ENUCoord)
 
-            # Calculate distance
-            currentDistance = sqrt(pow(gpsDistance,2) + pow(heightPosition,2))*100
-            distaneList.append(currentDistance)
-
-    # Calculate standard deviation
-    sigma = np.std(distaneList)
-    meanDistance = mean(distaneList)
-
-    return meanDistance, sigma, distaneList
+    return distaneListENU
 
 
 
