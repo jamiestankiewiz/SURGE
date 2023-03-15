@@ -81,3 +81,19 @@ class NUCSerialComms:
         """
         # Send serial communication to NUC
         self.cubeOrangeConnection.mav.statustext_send(messageType, messageText.encode())
+
+    def getFlightMode(self):
+        """
+        This function returns the current flight mode in mission planner.
+
+        Input:  None
+                
+
+        Output: Flight Mode
+        """
+        mode = -1
+        msg = self.cubeOrangeConnection.recv_match(type = 'HEARTBEAT', blocking = False)
+        if msg:
+            mode = mavutil.mode_string_v10(msg)
+
+        

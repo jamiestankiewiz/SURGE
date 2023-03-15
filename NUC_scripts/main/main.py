@@ -9,6 +9,8 @@ This script will run the main functionality of the NUC.
 
 # Import time
 from time import time
+import subprocess, os
+import signal
 
 # Import libraries
 from lib.nuc_serial_comms import NUCSerialComms
@@ -35,6 +37,23 @@ def main():
 
         # Start fuctions
         serialComms.determineMessageForCube()
+        rpistr = "python3 /home/gpsadmin/Desktop/Code/test_scripts/mavlink_send_1_and_0.py"
+        Mode = serialComms.getFlightMode()
+        running = 0
+
+        print(Mode)
+        """
+        if Mode == 'Auto' and running == 0:
+            running = 1
+
+            p=subprocess.Popen(rpistr, shell=True, preexec_fn=os.setsid)
+        elif Mode != 'Auto' and running == 1:
+            os.killpg(p.pid, signal.SIGTERM)
+            running = 0
+
+        """
+
+
 
 if __name__ == "__main__":
     main()
