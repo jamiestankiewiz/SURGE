@@ -36,7 +36,7 @@ class DiskUsageMonitor:
         spaceUsedFirstPull = self.pullDiskData()
 
         # Sleep for half a second
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         # Pull disk information
         spaceUsedSecondPull = self.pullDiskData()
