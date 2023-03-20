@@ -20,11 +20,11 @@ def main(file, start_time, stop_time, sampling_freq=22e6):
         mm = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
 
         NEW_FILE_NAME = 'trunc_' + file.split('/')[-1]
-        
-        # NEW_FILE_SIZE = stop_bit - start_bit + 1
-        # new_f = open(NEW_FILE_NAME, "wb")
-        # new_f.write((NEW_FILE_SIZE)*b'\0')
-        # new_f.close()
+
+        NEW_FILE_SIZE = stop_bit - start_bit + 1
+        new_f = open(NEW_FILE_NAME, "wb")
+        new_f.write((NEW_FILE_SIZE)*b'\0')
+        new_f.close()
         
         with open(NEW_FILE_NAME, "r+b") as new_file_obj:
             # export/write sliced mmap object
@@ -36,7 +36,7 @@ def main(file, start_time, stop_time, sampling_freq=22e6):
 
 if __name__=="__main__":
     # file = '~/media/DataStore/usrp3/20230313_boulderreservoir_test1/20230313_094235_000000_BALLOON_1176.45_22.0.sc8'
-    file = '../../NUC_scripts/SDR_backup_files/test_sc8_files/20230201_190013_000001_BALLOON_1176.45_22.0.sc8'
+    file = '../../NUC_scripts/SDR_backup_files/test_sc8_files/20230202_191216_000001_BALLOON_1176.45_22.0.sc8'
     # File information
     file_creation_time = os.path.getctime(file) # seconds
     last_modified = os.path.getmtime(file) # seconds
