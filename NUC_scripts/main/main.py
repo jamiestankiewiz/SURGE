@@ -37,21 +37,21 @@ def main():
 
         # Start fuctions
         serialComms.determineMessageForCube()
+        #rpistr = "python3 /home/gpsadmin/Desktop/Code/test_scripts/mavlink_send_1_and_0.py"
         rpistr = "python3 /home/gpsadmin/Desktop/Code/test_scripts/mavlink_send_1_and_0.py"
         Mode = serialComms.getFlightMode()
         running = 0
 
         print(Mode)
-        """
-        if Mode == 'Auto' and running == 0:
+        
+        if Mode == 'Guided' and running == 0:
             running = 1
 
             p=subprocess.Popen(rpistr, shell=True, preexec_fn=os.setsid)
-        elif Mode != 'Auto' and running == 1:
+        elif Mode != 'Guided' and running == 1:
             os.killpg(p.pid, signal.SIGTERM)
             running = 0
 
-        """
 
 
 
