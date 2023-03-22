@@ -57,19 +57,15 @@ def plotErrorValues(distaneListENU):
     convertToMeters = 100
 
     # Convert ENU values to numpy array
-    distanceListEast = np.array([distanceENU[0] for distanceENU in distaneListENU[0]])*convertToMeters
-    distanceListNorth = np.array([distanceENU[1] for distanceENU in distaneListENU[0]])*convertToMeters
-    distanceListUp = np.array([distanceENU[2] for distanceENU in distaneListENU[0]])*convertToMeters
+    distanceE = np.array(distaneListENU[5])*convertToMeters
+    distanceN = np.array(distaneListENU[6])*convertToMeters
+    distanceU = np.array(distaneListENU[7])*convertToMeters
 
     # Pull std values
     sigma_EN = distaneListENU[1]*convertToMeters
-    sigma_EU = distaneListENU[2]*convertToMeters
-    sigma_NU = distaneListENU[3]*convertToMeters
-
-    # Pull distance values
-    distanceEN = np.array(distaneListENU[4])*convertToMeters
-    distanceEU = np.array(distaneListENU[5])*convertToMeters
-    distanceNU = np.array(distaneListENU[6])*convertToMeters
+    sigma_E = distaneListENU[2]*convertToMeters
+    sigma_N = distaneListENU[3]*convertToMeters
+    sigma_U = distaneListENU[4]*convertToMeters
 
     # Create circles for EN
     theta = np.linspace( 0 , 2 * np.pi , 150 )
@@ -81,90 +77,69 @@ def plotErrorValues(distaneListENU):
     b_three_sigma_EN = 3*sigma_EN * np.sin(theta)
 
     # Create scatter plot
-    fig, axs = plt.subplots(2,2)
-    axs[0, 0].grid(color='k', linestyle='--', linewidth=0.3)
-    axs[0, 0].scatter(distanceListEast, distanceListNorth)
-    axs[0, 0].set_title('EN Error')
-    axs[0, 0].plot( a_one_sigma_EN, b_one_sigma_EN, "r", label = "One Sigma" )
-    axs[0, 0].plot( a_two_sigma_EN, b_two_sigma_EN, "g", label = "Two Sigma" )
-    axs[0, 0].plot( a_three_sigma_EN, b_three_sigma_EN, "y", label = "Three Sigma" )
-    axs[0, 0].legend(loc="upper right")
-    axs[0, 0].axis('equal')
+    fig, axs = plt.subplots(1,2)
+    axs[0].grid(color='k', linestyle='--', linewidth=0.3)
+    axs[0].scatter(distanceE, distanceN, marker = ".")
+    axs[0].set_title('EN Error')
+    axs[0].plot( a_one_sigma_EN, b_one_sigma_EN, "r--", label = "$\sigma$" )
+    axs[0].plot( a_two_sigma_EN, b_two_sigma_EN, "g--", label = "2$\sigma$" )
+    axs[0].plot( a_three_sigma_EN, b_three_sigma_EN, "y--", label = "3$\sigma$" )
+    axs[0].legend(loc="upper right")
+    axs[0].axis('equal')
 
-    # Create circles for EU
-    a_one_sigma_EU = sigma_EU * np.cos(theta)
-    a_two_sigma_EU = 2*sigma_EU * np.cos(theta)
-    a_three_sigma_EU = 3*sigma_EU * np.cos(theta)
-    b_one_sigma_EU = sigma_EU * np.sin(theta)
-    b_two_sigma_EU = 2*sigma_EU * np.sin(theta)
-    b_three_sigma_EU = 3*sigma_EU * np.sin(theta)
-
-    # Create scatter plot
-    axs[0, 1].grid(color='k', linestyle='--', linewidth=0.3)
-    axs[0, 1].scatter(distanceListEast, distanceListUp)
-    axs[0, 1].set_title('EU Error')
-    axs[0, 1].plot( a_one_sigma_EU, b_one_sigma_EU, "r", label = "One Sigma" )
-    axs[0, 1].plot( a_two_sigma_EU, b_two_sigma_EU, "g", label = "Two Sigma" )
-    axs[0, 1].plot( a_three_sigma_EU, b_three_sigma_EU, "y", label = "Three Sigma" )
-    axs[0, 1].legend(loc="upper right")
-    axs[0, 1].axis('equal')
-
-    # Create circles for EU
-    a_one_sigma_NU = sigma_NU * np.cos(theta)
-    a_two_sigma_NU = 2*sigma_NU * np.cos(theta)
-    a_three_sigma_NU = 3*sigma_NU * np.cos(theta)
-    b_one_sigma_NU = sigma_NU * np.sin(theta)
-    b_two_sigma_NU = 2*sigma_NU * np.sin(theta)
-    b_three_sigma_NU = 3*sigma_NU * np.sin(theta)
-
-    # Create scatter plot
-    axs[1, 0].grid(color='k', linestyle='--', linewidth=0.3)
-    axs[1, 0].scatter(distanceListNorth, distanceListUp)
-    axs[1, 0].set_title('NU Error')
-    axs[1, 0].plot( a_one_sigma_NU, b_one_sigma_NU, "r", label = "One Sigma" )
-    axs[1, 0].plot( a_two_sigma_NU, b_two_sigma_NU, "g", label = "Two Sigma" )
-    axs[1, 0].plot( a_three_sigma_NU, b_three_sigma_NU, "y", label = "Three Sigma" )
-    axs[1, 0].legend(loc="upper right")
-    axs[1, 0].axis('equal')
-
-    # Remove extra plot
-    axs[1,1].set_axis_off()
+    # Create plot
+    axs[1].grid(color='k', linestyle='--', linewidth=0.3)
+    axs[1].set_title('ENU Error')
+    axs[1].plot( np.linspace(1, distanceN.size+1, num=distanceN.size), distanceN, "b", linestyle = "none", marker = ".", label = "N Error" )
+    axs[1].plot( np.linspace(1, distanceU.size+1, num=distanceU.size), distanceU, "r", linestyle = "none", marker = ".", label = "U Errorr" )
+    axs[1].plot( np.linspace(1, distanceE.size+1, num=distanceE.size), distanceE, "g", linestyle = "none", marker = ".", label = "E Error" )
+    axs[1].legend(loc="upper right")
 
     # Set plot labels
-    for ax in axs.flat[2:]:
-        ax.set(xlabel='Error [cm]')
-    for ax in [axs.flat[0], axs.flat[2]]:
+    axs.flat[0].set(xlabel='Error [cm]')
+    axs.flat[1].set(xlabel='Time [sec]')
+    for ax in [axs.flat[0], axs.flat[1]]:
         ax.set(ylabel='Error [cm]')
 
     # Plot histogram distance values
     fig, axs = plt.subplots(2,2)
     axs[0, 0].grid(color='k', linestyle='--', linewidth=0.3)
-    axs[0, 0].hist(distanceEN, 150)
-    axs[0, 0].set_title('EN Error')
-    axs[0, 0].axvline( sigma_EN, color = "r", label = "One Sigma" )
-    axs[0, 0].axvline( 2*sigma_EN, color = "g", label = "Two Sigma" )
-    axs[0, 0].axvline( 3*sigma_EN, color = "y", label = "Three Sigma" )
+    axs[0, 0].hist(distanceE, 150)
+    axs[0, 0].set_title('E Error')
+    axs[0, 0].axvline( sigma_E, color = "r", linestyle='--', label = "$\sigma$" )
+    axs[0, 0].axvline( 2*sigma_E, color = "g", linestyle='--', label = "2$\sigma$" )
+    axs[0, 0].axvline( 3*sigma_E, color = "y", linestyle='--', label = "3$\sigma$" )
+    axs[0, 0].axvline( -sigma_E, color = "r", linestyle='--')
+    axs[0, 0].axvline( -2*sigma_E, color = "g", linestyle='--')
+    axs[0, 0].axvline( -3*sigma_E, color = "y", linestyle='--')
     axs[0, 0].legend(loc="upper right")
 
     # Create scatter plot
     axs[0, 1].grid(color='k', linestyle='--', linewidth=0.3)
-    axs[0, 1].hist(distanceEU, 150)
-    axs[0, 1].set_title('EU Error')
-    axs[0, 1].axvline( sigma_EU, color = "r", label = "One Sigma" )
-    axs[0, 1].axvline( 2*sigma_EU, color = "g", label = "Two Sigma" )
-    axs[0, 1].axvline( 3*sigma_EU, color = "y", label = "Three Sigma" )
+    axs[0, 1].hist(distanceN, 150)
+    axs[0, 1].set_title('N Error')
+    axs[0, 1].axvline( sigma_N, color = "r", linestyle='--', label = "$\sigma$" )
+    axs[0, 1].axvline( 2*sigma_N, color = "g", linestyle='--', label = "2$\sigma$" )
+    axs[0, 1].axvline( 3*sigma_N, color = "y", linestyle='--', label = "3$\sigma$" )
+    axs[0, 1].axvline( -sigma_N, color = "r", linestyle='--')
+    axs[0, 1].axvline( -2*sigma_N, color = "g", linestyle='--')
+    axs[0, 1].axvline( -3*sigma_N, color = "y", linestyle='--')
     axs[0, 1].legend(loc="upper right")
 
     # Create scatter plot
     axs[1, 0].grid(color='k', linestyle='--', linewidth=0.3)
-    axs[1, 0].hist(distanceNU, 150)
-    axs[1, 0].set_title('NU Error')
-    axs[1, 0].axvline( sigma_NU, color = "r", label = "One Sigma" )
-    axs[1, 0].axvline( 2*sigma_NU, color = "g", label = "Two Sigma" )
-    axs[1, 0].axvline( 3*sigma_NU, color = "y", label = "Three Sigma" )
+    axs[1, 0].hist(distanceU, 150)
+    axs[1, 0].set_title('U Error')
+    axs[1, 0].axvline( sigma_U, color = "r", linestyle='--', label = "$\sigma$" )
+    axs[1, 0].axvline( 2*sigma_U, color = "g", linestyle='--', label = "2$\sigma$" )
+    axs[1, 0].axvline( 3*sigma_U, color = "y", linestyle='--', label = "3$\sigma$" )
+    axs[1, 0].axvline( -sigma_U, color = "r", linestyle='--')
+    axs[1, 0].axvline( -2*sigma_U, color = "g", linestyle='--')
+    axs[1, 0].axvline( -3*sigma_U, color = "y", linestyle='--')
     axs[1, 0].legend(loc="upper right")
 
     # Set plot labels
+    axs.flat[1].set(xlabel='Error [cm]')
     for ax in axs.flat[2:]:
         ax.set(xlabel='Error [cm]')
     for ax in [axs.flat[0], axs.flat[2]]:
@@ -221,22 +196,25 @@ def calculateSigmaAndMean(latitude, longitude, height, Q):
     # Calculate distance between points
     distaneListENU = []
     distanceEN = []
-    distanceEU = []
-    distanceNU = []
+    distanceE = []
+    distanceN = []
+    distanceU = []
     for index in range(len(coordListENU)):
         
         # Calculate point and distane values
         distanceEN.append(sqrt(pow(coordListENU[index][0],2) + pow(coordListENU[index][1],2)))
-        distanceEU.append(sqrt(pow(coordListENU[index][0],2) + pow(coordListENU[index][2],2)))
-        distanceNU.append(sqrt(pow(coordListENU[index][1],2) + pow(coordListENU[index][2],2)))
+        distanceE.append(coordListENU[index][0])
+        distanceN.append(coordListENU[index][1])
+        distanceU.append(coordListENU[index][2])
 
     # Calculate distance ranges sigma
     sigmaEN = np.std(distanceEN)
-    sigmaEU = np.std(distanceEU)
-    sigmaNU = np.std(distanceNU)
+    sigmaE = np.std(distanceE)
+    sigmaN = np.std(distanceN)
+    sigmaU = np.std(distanceU)
 
     # Combine to array
-    distaneListENU = [coordListENU, sigmaEN, sigmaEU, sigmaNU, distanceEN, distanceEU, distanceNU]
+    distaneListENU = [coordListENU, sigmaEN, sigmaE, sigmaN, sigmaU, distanceE, distanceN, distanceU]
 
     return distaneListENU
 
