@@ -38,26 +38,21 @@ def main():
 
         # Start fuctions
         serialComms.determineMessageForCube()
-        #rpistr = "python3 /home/gpsadmin/Desktop/Code/test_scripts/mavlink_send_1_and_0.py"
-        rpistr = "python3 /home/gpsadmin/Desktop/Code/test_scripts/mavlink_send_1_and_0.py"
         Mode = serialComms.getFlightMode()
         if Mode == -1:
-            continue
+          continue
         Mode = Mode.lower()
         Mode_list = ['guided','loiter','stabilize','auto','land','alt hold','circle']
-        print(Mode)
-        
+        #print(Mode)
+        rpistr = "sudo -u gpsadmin -H /home/gpsadmin/uhd_ext-ncl2/rx_multi_to_file --settings /home/gpsadmin/uhd_ext-ncl2/b210_split_settings-balloon.xml --time -1"
         if Mode in Mode_list:
-            if Mode == 'guided' and running == 0:
-                running = 1
-
-                p=subprocess.Popen(rpistr, shell=True, preexec_fn=os.setsid)
-            elif Mode != 'guided' and running == 1:
-                os.killpg(p.pid, signal.SIGTERM)
-                running = 0
-
-
-
-
+          #print(Mode)
+          if Mode == 'guided' and running == 0:
+              running = 1
+              #print("Me Here")
+              p=subprocess.Popen(rpistr, shell=True, preexec_fn=os.setsid)
+          elif Mode != 'guided' and running == 1:
+              os.killpg(p.pid, signal.SIGTERM)
+              running = 0
 if __name__ == "__main__":
     main()
