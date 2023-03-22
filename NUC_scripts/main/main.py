@@ -32,7 +32,7 @@ def main():
     # Create objects
     serialComms = NUCSerialComms(serialPort, serialSpeed, pathToDisk)
     running = 0
-    
+
     # Run main loop
     while True:
 
@@ -41,7 +41,8 @@ def main():
         #rpistr = "python3 /home/gpsadmin/Desktop/Code/test_scripts/mavlink_send_1_and_0.py"
         rpistr = "python3 /home/gpsadmin/Desktop/Code/test_scripts/mavlink_send_1_and_0.py"
         Mode = serialComms.getFlightMode()
-        
+        if Mode == -1:
+            continue
         Mode = Mode.lower()
         Mode_list = ['guided','loiter','stabilize','auto','land','alt hold','circle']
         print(Mode)
