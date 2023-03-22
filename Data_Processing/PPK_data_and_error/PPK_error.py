@@ -13,6 +13,7 @@ from pymap3d import geodetic2enu
 from math import sqrt, pow
 import numpy as np
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 def main():
     """
@@ -37,10 +38,10 @@ def main():
     errorFile = ParsePOSData(fileName)
 
     # Pull file data
-    _, latitude, longitude, height, Q, _ = errorFile.getPOSData()
+    GPST, latitude, longitude, height, Q, _ = errorFile.getPOSData()
 
     # Calculate STD sigma
-    distaneListENU = calculateSigmaAndMean(latitude, longitude, height, Q)
+    distaneListENU = calculateSigmaAndMean(latitude, longitude, height, Q, GPST)
 
     # Plot values
     plotErrorValues(distaneListENU)
@@ -55,6 +56,9 @@ def plotErrorValues(distaneListENU):
     """
     # Define constants
     convertToMeters = 100
+
+    # Pull time values
+    timeValues = distaneListENU[8]
 
     # Convert ENU values to numpy array
     distanceE = np.array(distaneListENU[5])*convertToMeters
@@ -90,9 +94,9 @@ def plotErrorValues(distaneListENU):
     # Create plot
     axs[1].grid(color='k', linestyle='--', linewidth=0.3)
     axs[1].set_title('ENU Error')
-    axs[1].plot( np.linspace(1, distanceN.size+1, num=distanceN.size), distanceN, "b", linestyle = "none", marker = ".", label = "N Error" )
-    axs[1].plot( np.linspace(1, distanceU.size+1, num=distanceU.size), distanceU, "r", linestyle = "none", marker = ".", label = "U Errorr" )
-    axs[1].plot( np.linspace(1, distanceE.size+1, num=distanceE.size), distanceE, "g", linestyle = "none", marker = ".", label = "E Error" )
+    axs[1].plot( timeValues, distanceN, "b", linestyle = "none", marker = ".", label = "N Error" )
+    axs[1].plot( timeValues, distanceU, "r", linestyle = "none", marker = ".", label = "U Errorr" )
+    axs[1].plot( timeValues, distanceE, "g", linestyle = "none", marker = ".", label = "E Error" )
     axs[1].legend(loc="upper right")
 
     # Set plot labels
@@ -151,7 +155,7 @@ def plotErrorValues(distaneListENU):
     # Show plot
     plt.show()
 
-def calculateSigmaAndMean(latitude, longitude, height, Q):
+def calculateSigmaAndMean(latitude, longitude, height, Q, GPST):
     """
     This function will calculate the standard deviation between the points.
     
@@ -159,6 +163,7 @@ def calculateSigmaAndMean(latitude, longitude, height, Q):
             longitude <list><float> - Longitude of positon
             height <list><float> - Height of position
             Q <list><int> - Signal quality
+            GPST <list><str> - Time data
 
     Output: distaneListENU <list> - ENU Positions and sigma values
     """
@@ -166,9 +171,11 @@ def calculateSigmaAndMean(latitude, longitude, height, Q):
     convertToMeters = 100
 
     # Calculate average position per data
+    firstTimeValue = True
     latitudeQ1 = []
     longitudeQ1 = []
     heightQ1 = []
+    timeValueList = []
     for index in range(len(latitude)):
 
         # Check if Q is 1
@@ -178,6 +185,18 @@ def calculateSigmaAndMean(latitude, longitude, height, Q):
             latitudeQ1.append(latitude[index])
             longitudeQ1.append(longitude[index])
             heightQ1.append(height[index])
+
+            # Pull time values
+            timeValueCombine = GPST[index][0] + ' ' + GPST[index][1]
+            timeValue = datetime.strptime(timeValueCombine, '%Y/%m/%d %H:%M:%S.%f')
+            timeValueList.append(timeValue)
+
+            # Pull first time value
+            if firstTimeValue:
+                firstTimeValue = False
+
+                # Combine string
+                timeValueFirst = timeValue
             
     # Calculate average position
     averagePosition = [mean(latitudeQ1), mean(longitudeQ1), mean(heightQ1)]
@@ -199,6 +218,7 @@ def calculateSigmaAndMean(latitude, longitude, height, Q):
     distanceE = []
     distanceN = []
     distanceU = []
+    timeValueListSeconds = []
     for index in range(len(coordListENU)):
         
         # Calculate point and distane values
@@ -207,6 +227,10 @@ def calculateSigmaAndMean(latitude, longitude, height, Q):
         distanceN.append(coordListENU[index][1])
         distanceU.append(coordListENU[index][2])
 
+        # Pull date time value
+        timeDifference = (timeValueList[index] - timeValueFirst).total_seconds()
+        timeValueListSeconds.append(timeDifference)
+
     # Calculate distance ranges sigma
     sigmaEN = np.std(distanceEN)
     sigmaE = np.std(distanceE)
@@ -214,7 +238,7 @@ def calculateSigmaAndMean(latitude, longitude, height, Q):
     sigmaU = np.std(distanceU)
 
     # Combine to array
-    distaneListENU = [coordListENU, sigmaEN, sigmaE, sigmaN, sigmaU, distanceE, distanceN, distanceU]
+    distaneListENU = [coordListENU, sigmaEN, sigmaE, sigmaN, sigmaU, distanceE, distanceN, distanceU, timeValueListSeconds]
 
     return distaneListENU
 
