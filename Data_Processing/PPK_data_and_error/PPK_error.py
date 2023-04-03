@@ -29,7 +29,7 @@ def main():
     fileName = 'PPKdata_8.pos'
 
     # Find path to file
-    currentFile = str(__file__).split('/')
+    currentFile = str(__file__).split('\\')
     currentFile = currentFile[:-1]
     currentFile = '\\'.join(currentFile)
     fileName = currentFile + '\data_files\\' + fileName
