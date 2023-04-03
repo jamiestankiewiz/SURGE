@@ -59,8 +59,6 @@ def main():
         f.close()
         ser.close()
 
-
-
 def checkForFileNumber(pathToDisk):
     """
     This function will check for the current file number that
