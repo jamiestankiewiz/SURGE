@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Author: Andreas Brecl, Aaron Buller
+Author: Andreas Brecl, Aaron Buller, Sean Newman
 Date: 02/01/2023
 
 This script will run the PPK to save software to the NUC.
@@ -58,8 +58,6 @@ def main():
         # Close the file and serial
         f.close()
         ser.close()
-
-
 
 def checkForFileNumber(pathToDisk):
     """
