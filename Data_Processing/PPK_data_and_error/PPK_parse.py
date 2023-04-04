@@ -4,6 +4,9 @@ from datetime import datetime
 
 
 def main():
+    """
+    Parse PPK data file (.pos)
+    """
     # Enter file name
     fileName = 'PPKdata_39_2023-03-13-09_42_10.pos'
 
@@ -25,15 +28,25 @@ def main():
     # print('longitude', longitude) # [degrees]
     # print('height', height) # SL reference, [m]
     # print('Q', Q) # data quality
+    
+    # Convert time to MST
     MST = convertUTCtoMST(GPST=GPST)
-    print(MST)
+    
+    # Convert height (wrt SL) to altitude above Boulder Res
+    # Boulder Res altitude: 1578 m
+    altitude = 1578 # m
+    height = [alt - altitude for alt in height]
+    if any([alt <=0 for alt in height]):
+        print('INVALID ALTITUDE: altitude less than Boulder altitude.')
 
 
 def convertUTCtoMST(GPST):
     """
+    PPK data is in UTC, change to MST.
     Input:
         GPST <list><str> - Time data (in UTC)
     Output:
+        # currently datetime objects
         GPST <list><str> - Time data (in MST)
     """
     fromZone = tz.gettz('UTC')
