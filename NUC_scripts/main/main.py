@@ -47,11 +47,11 @@ def main():
         rpistr = "sudo -u gpsadmin -H /home/gpsadmin/uhd_ext-ncl2/rx_multi_to_file --settings /home/gpsadmin/uhd_ext-ncl2/b210_split_settings-balloon.xml --time -1"
         if Mode in Mode_list:
           #print(Mode)
-          if Mode == 'guided' and running == 0:
+          if Mode == 'auto' and running == 0:
               running = 1
               #print("Me Here")
               p=subprocess.Popen(rpistr, shell=True, preexec_fn=os.setsid)
-          elif Mode != 'guided' and running == 1:
+          elif Mode != 'auto' and running == 1:
               os.killpg(p.pid, signal.SIGTERM)
               running = 0
 if __name__ == "__main__":
