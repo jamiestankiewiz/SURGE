@@ -1,7 +1,7 @@
 from dateutil import tz
 from lib.parse_pos_data import ParsePOSData
 from datetime import datetime
-
+from navpy import lla2ecef
 
 def main():
     """
@@ -34,10 +34,15 @@ def main():
     
     # Convert height (wrt SL) to altitude above Boulder Res
     # Boulder Res altitude: 1578 m
-    altitude = 1578 # m
-    height = [alt - altitude for alt in height]
-    if any([alt <=0 for alt in height]):
-        print('INVALID ALTITUDE: altitude less than Boulder altitude.')
+    # altitude = 1578 # m
+    # height = [alt - altitude for alt in height]
+    # if any([alt <=0 for alt in height]):
+    #     print('INVALID ALTITUDE: altitude less than Boulder altitude.')
+
+    # Positional location of drone
+    drone_ecef = lla2ecef(lat=latitude, lon=longitude, alt=height, latlon_unit='deg', alt_unit='m',
+             model='wgs84')
+    print(drone_ecef)
 
 
 def convertUTCtoMST(GPST):
