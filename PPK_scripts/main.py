@@ -91,7 +91,7 @@ def checkForFileNumber(pathToDisk):
         newFileName = "PPKdata_" + str(newFileNumber) + "_" + time.strftime("%Y-%m-%d-%H:%M:%S") + ".ubx"    
 
     else:
-        newFileName = "PPKdata_1.txt"
+        newFileName = "PPKdata_1" + "_" + time.strftime("%Y-%m-%d-%H:%M:%S") + ".ubx"
 
     return newFileName
 
