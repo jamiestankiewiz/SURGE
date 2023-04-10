@@ -2,14 +2,14 @@ from dateutil import tz
 from lib.parse_pos_data import ParsePOSData
 from datetime import datetime
 from navpy import lla2ecef
+import numpy as np
+from scipy import optimize
+import csv
 
-def main():
+def main(fileName, satellite_ecef):
     """
     Parse PPK data file (.pos)
     """
-    # Enter file name
-    fileName = 'PPKdata_39_2023-03-13-09_42_10.pos'
-
     # Find path to file
     currentFile = str(__file__).split('\\')
     currentFile = currentFile[:-1]
@@ -28,10 +28,10 @@ def main():
     # print('longitude', longitude) # [degrees]
     # print('height', height) # SL reference, [m]
     # print('Q', Q) # data quality
-    
+
     # Convert time to MST
     MST = convertUTCtoMST(GPST=GPST)
-    
+
     # Convert height (wrt SL) to altitude above Boulder Res
     # Boulder Res altitude: 1578 m
     # altitude = 1578 # m
@@ -40,10 +40,28 @@ def main():
     #     print('INVALID ALTITUDE: altitude less than Boulder altitude.')
 
     # Positional location of drone
-    drone_ecef = lla2ecef(lat=latitude, lon=longitude, alt=height, latlon_unit='deg', alt_unit='m',
-             model='wgs84')
-    print(drone_ecef)
+    drone_ecef = lla2ecef(lat=latitude, lon=longitude, alt=height,
+                          latlon_unit='deg', alt_unit='m',
+                          model='wgs84')
+    print('length of drone ecef', len(drone_ecef))
+    with open('drone_ecef', 'w') as f:
+        # using csv.writer method from CSV package
+        write = csv.writer(f)
+        for drone_ecef_point in drone_ecef:
+            write.writerow(drone_ecef_point)
 
+    # function [sp_lat, sp_lon] = sp_calc(Tx_ecef, Rx_ecef, sp_height, x0)
+    # fun = @(x)(norm(lla2ecef([x(1) x(2) sp_height])-Tx_ecef') + ...
+    #     norm(lla2ecef([x(1) x(2) sp_height])-Rx_ecef'));
+    # x = fminsearch(fun,x0);
+    # sp_lat = x(1);
+    # sp_lon = x(2);
+    # end
+    # print(len([satellite_ecef]*len(drone_ecef)))
+    spCalc = lambda x: np.linalg.norm(x - satellite_ecef) + \
+                       np.linalg.norm(x - drone_ecef[0,])
+    xopt = optimize.fmin(func=spCalc, x0=drone_ecef[0,])
+    print(xopt)
 
 def convertUTCtoMST(GPST):
     """
@@ -58,7 +76,8 @@ def convertUTCtoMST(GPST):
     toZone = tz.gettz('America/Denver')
 
     timeValueCombine = [date + ' ' + time for date, time in GPST]    
-    timeValue = [datetime.strptime(date_time, '%Y/%m/%d %H:%M:%S.%f') for date_time in timeValueCombine]
+    timeValue = [datetime.strptime(date_time, '%Y/%m/%d %H:%M:%S.%f')
+                 for date_time in timeValueCombine]
             
     # Tell the datetime object that it's in UTC time zone since 
     # datetime objects are 'naive' by default
@@ -70,4 +89,6 @@ def convertUTCtoMST(GPST):
     return MST
 
 if __name__=='__main__':
-    main()
+    main(fileName = 'PPKdata_39_2023-03-13-09_42_10.pos',
+         satellite_ecef = [16163520.8974696, -9843045.49135850, -18726663.2253074]
+         )
