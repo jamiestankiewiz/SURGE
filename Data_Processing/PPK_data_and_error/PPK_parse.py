@@ -22,6 +22,9 @@ def main(fileName, satellite_ecef):
     # Pull file data
     GPST, latitude, longitude, height, Q, _ = errorFile.getPOSData()
 
+    # Altitude of Boulder res [m]
+    boulder_alt = 1578
+
     # Print values
     # print(GPST) # GPS_time/UTC, parse this, convert to datetime
     # print('latitude', latitude) # [degrees]
@@ -44,24 +47,26 @@ def main(fileName, satellite_ecef):
                           latlon_unit='deg', alt_unit='m',
                           model='wgs84')
     print('length of drone ecef', len(drone_ecef))
+    flighttime_75percent = drone_ecef[int(len(drone_ecef)*.75)]
+    print('75 percent into flight', flighttime_75percent)
+
+
     with open('drone_ecef', 'w') as f:
         # using csv.writer method from CSV package
         write = csv.writer(f)
         for drone_ecef_point in drone_ecef:
             write.writerow(drone_ecef_point)
 
-    # function [sp_lat, sp_lon] = sp_calc(Tx_ecef, Rx_ecef, sp_height, x0)
-    # fun = @(x)(norm(lla2ecef([x(1) x(2) sp_height])-Tx_ecef') + ...
-    #     norm(lla2ecef([x(1) x(2) sp_height])-Rx_ecef'));
-    # x = fminsearch(fun,x0);
-    # sp_lat = x(1);
-    # sp_lon = x(2);
-    # end
-    # print(len([satellite_ecef]*len(drone_ecef)))
+    # note: incorportate boulder alt of 1578 m
     spCalc = lambda x: np.linalg.norm(x - satellite_ecef) + \
-                       np.linalg.norm(x - drone_ecef[0,])
-    xopt = optimize.fmin(func=spCalc, x0=drone_ecef[0,])
-    print(xopt)
+                       np.linalg.norm(x - flighttime_75percent)
+    xopt = optimize.fmin(func=spCalc, x0=flighttime_75percent)
+    print('Optimized SP', xopt)
+
+    # drone height at 75% into flight
+    # TODO: really convert this based on time
+    print('Height of drone [m]', height[int(.75*len(height))] - boulder_alt)
+
 
 def convertUTCtoMST(GPST):
     """
@@ -78,7 +83,7 @@ def convertUTCtoMST(GPST):
     timeValueCombine = [date + ' ' + time for date, time in GPST]    
     timeValue = [datetime.strptime(date_time, '%Y/%m/%d %H:%M:%S.%f')
                  for date_time in timeValueCombine]
-            
+
     # Tell the datetime object that it's in UTC time zone since 
     # datetime objects are 'naive' by default
     timeValue = [date_time.replace(tzinfo=fromZone) for date_time in timeValue] # UTC
